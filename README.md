@@ -1,11 +1,11 @@
-# osxnotify
+# libosxnotify
 
 No nonsense OS X notifications for scripts.
 
 ## What?
 
 This repostory contains some Objective-C code that can be used by external
-scripts to display native OS X notifications.
+programs to display native OS X notifications.
 
 ## Why?
 
@@ -21,16 +21,35 @@ third party binaries.
 * OS X >= 10.9.4 - should work on Mountain Lion but it's not tested.
 * Xcode and command line utilities.
 
+## Installation
+
+To install the `libosxnotify` library, issue the following command:
+
+```sh
+$ make install
+```
+
+By default, the library will install to `/usr/local`. You can change this
+by setting `PREFIX` environment variable, e.g.
+
+```sh
+$ PREFIX=/Users/bilbo/opt/libosxnotify make install
+```
+
+## Usage
+
+See the code of `osxnotify` program for usage example.
+
 ## Issues and limitations
 
 Due to the nature of OS X notification system, it's currently impossible to
 change the icon. OS X assumes that notifications are sent from a running app.
-Since this isn't the case in, say, Python scripts, osxnotify has to hack
+Since this isn't the case in, say, Python scripts, libosxnotify has to hack
 Objective-C runtime to make it think there's an app running. By doing so,
-osxnotify sets the ID of the current up to the system-provided Terminal.app.
+libosxnotify sets the ID of the current up to the system-provided Terminal.app.
 
-osxnotify only supports text content (title, subtitle and informative text) in
-notifications. Buttons, inputs and images aren't supported.
+libosxnotify only supports text content (title, subtitle and informative text)
+in notifications. Buttons, inputs and images aren't supported.
 
 UTF-8 is the only supported text encoding. And yes, emojis are supported ;).
 
@@ -41,13 +60,13 @@ may surprise you by blowing up your program. You've been warned.
 
 ## Wrappers
 
-* Native Python wrapper - located under `python_native`,
-* CFFI-based Python wrapper - located under `python_cffi`.
+* [python-osxnotify](https://github.com/tomekwojcik/python-osxnotify) - native Python wrapper,
+* [python-osxnotify-cffi](https://github.com/tomekwojcik/python-osxnotify-cffi) - CFFI-based Python wrapper.
 
 ## License
 
-osxnotify is licensed under MIT License.
+libosxnotify is licensed under MIT License.
 
-## Credits
+## Author
 
-Core code and Python wrappers were written by [Tomek Wójcik](http://www.tomekwojcik.com/).
+libosxnotify was written by [Tomek Wójcik](http://www.tomekwojcik.com/).
