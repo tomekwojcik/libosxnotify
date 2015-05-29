@@ -60,8 +60,8 @@ may surprise you by blowing up your program. You've been warned.
 
 ## Wrappers
 
-* [python-osxnotify](https://github.com/tomekwojcik/python-osxnotify) - native Python wrapper,
-* [python-osxnotify-cffi](https://github.com/tomekwojcik/python-osxnotify-cffi) - CFFI-based Python wrapper.
+* [osxnotify-python](https://github.com/tomekwojcik/osxnotify-python) - native Python wrapper,
+* [osxnotify-python-cffi](https://github.com/tomekwojcik/osxnotify-python-cffi) - CFFI-based Python wrapper.
 
 ## License
 

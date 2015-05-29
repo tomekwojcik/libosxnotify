@@ -15,6 +15,12 @@ ifndef PREFIX
 	PREFIX=/usr/local
 endif
 
+ifdef OSXNDEBUG
+	CFLAGS=-DOSXNDEBUG
+else
+	CFLAGS=-O3
+endif
+
 build:
 	mkdir -p build
 
@@ -27,8 +33,11 @@ build/bundle_id_hack.o: build
 build/libosxnotify.dylib: build/notify.o build/bundle_id_hack.o
 	clang $(OBJC_FRAMEWORKS) $(OBJC_LDFLAGS) -install_name $(PREFIX)/lib/libosxnotify.dylib -current_version $(VERSION) -compatibility_version $(COMPAT_VERSION) -shared -undefined dynamic_lookup -o build/libosxnotify.dylib build/notify.o build/bundle_id_hack.o
 
-build/libosxnotify.h:
+build/libosxnotify.h: build
 	cp src/libosxnotify.h build/libosxnotify.h
+
+build/osxnotify: build build/libosxnotify.dylib
+	clang $(CFLAGS) -Isrc/ -Lbuild/ -losxnotify -o build/osxnotify src/osxnotify.c
 
 clean:
 	rm -rf build
@@ -36,12 +45,14 @@ clean:
 all: build/libosxnotify.dylib build/libosxnotify.h
 
 installdirs:
+	$(INSTALL) -d $(PREFIX)/bin
 	$(INSTALL) -d $(PREFIX)/lib
 	$(INSTALL) -d $(PREFIX)/include
 	$(INSTALL) -d $(PREFIX)/share/libosxnotify
 
-install: build/libosxnotify.dylib build/libosxnotify.h installdirs
-	$(INSTALL_BIN) build/libosxnotify.dylib $(PREFIX)/lib/libosxnotify.dylib
+install: build/libosxnotify.dylib build/libosxnotify.h build/osxnotify installdirs
+	$(INSTALL_BIN) build/osxnotify $(PREFIX)/bin/osxnotify
 	$(INSTALL_DATA) build/libosxnotify.h $(PREFIX)/include/libosxnotify.h
+	$(INSTALL_BIN) build/libosxnotify.dylib $(PREFIX)/lib/libosxnotify.dylib
 	$(INSTALL_DATA) README.md $(PREFIX)/share/libosxnotify/README.md
 	$(INSTALL_DATA) LICENSE $(PREFIX)/share/libosxnotify/LICENSE
