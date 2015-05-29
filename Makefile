@@ -42,7 +42,7 @@ build/osxnotify: build build/libosxnotify.dylib
 clean:
 	rm -rf build
 
-all: build/libosxnotify.dylib build/libosxnotify.h
+all: build/libosxnotify.dylib build/libosxnotify.h build/osxnotify
 
 installdirs:
 	$(INSTALL) -d $(PREFIX)/bin
