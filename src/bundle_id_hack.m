@@ -22,9 +22,12 @@
  
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "bundle_id_hack.m"
+#import "bundle_id_hack.h"
 
 @implementation NSBundle (FakeBundleIdentifier)
+
+// Based on code from terminal-notifier.
+// https://github.com/alloy/terminal-notifier | MIT Licensed
 
 -(NSString *)__bundleIdentifier {
     if (self == [NSBundle mainBundle]) {

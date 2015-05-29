@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _notifier_h
-#define _notifier_h
+#ifndef _libosxnotify_h
+#define _libosxnotify_h
 
 void notify(char *title, char *subtitle, char *informative_text);
 
