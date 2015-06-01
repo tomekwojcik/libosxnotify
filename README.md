@@ -26,7 +26,22 @@ notifications.
 
 ## Installation
 
-To install the `libosxnotify` library, issue the following command:
+There are two ways to install libosxnotify - from a Homebrew tap or from
+source.
+
+### From Homebrew tap
+
+To install the library from the Homebrew tap, issue the following commands:
+
+```sh
+$ brew tap tomekwojcik/tomekwojcik
+$ brew install libosxnotify
+```
+
+### From source
+
+To install the library from source, clone the repository and issue the
+following commands:
 
 ```sh
 $ ./configure
