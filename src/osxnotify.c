@@ -21,6 +21,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <libosxnotify.h>
 
 int main(int argc, char **argv) {
@@ -42,6 +43,10 @@ int main(int argc, char **argv) {
     }
 
     notify(title, subtitle, informative_text);
+
+    // Delivery will fail if the process is dead when OS X processes the
+    // notification. This *should* ensure the delivery.
+    sleep(1);
 
     return 0;
 }
