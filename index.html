@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Libosxnotify by tomekwojcik</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Libosxnotify</h1>
+        <h2>No nonsense OS X notifications for scripts.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/tomekwojcik/libosxnotify/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/tomekwojcik/libosxnotify/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/tomekwojcik/libosxnotify" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a id="libosxnotify" class="anchor" href="#libosxnotify" aria-hidden="true"><span class="octicon octicon-link"></span></a>libosxnotify</h1>
+
+<p>No nonsense OS X notifications for scripts.</p>
+
+<h2>
+<a id="what" class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What?</h2>
+
+<p>This repostory contains some Objective-C code that can be used by external
+programs to display native OS X notifications.</p>
+
+<h2>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<p>It all started as an idea to practice writing Python extensions in C. Then
+<a href="https://github.com/lukaszkorecki">@lukaszkorecki</a> suggested to support FFI
+so this code can be used in languages other than Python. The idea was to allow
+scripts to display notifications without relying on calling third party
+binaries.</p>
+
+<p>In time, the idea evolved to become a shared library which can be used by other
+programs (e.g. the supplied <code>osxnotify</code> program) that want to display
+notifications.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>OS X &gt;= 10.9.4 - should work on Mountain Lion but it's not tested.</li>
+<li>Xcode and command line utilities.</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To install the <code>libosxnotify</code> library, issue the following command:</p>
+
+<div class="highlight highlight-sh"><pre>$ ./configure
+$ make install</pre></div>
+
+<p>By default, the library will install to <code>/usr/local</code>. You can change this using
+<code>--prefix</code> parameter for <code>configure</code>, e.g. </p>
+
+<div class="highlight highlight-sh"><pre>$ ./configure --prefix=/Users/bilbo/opt/libosxnotify
+$ make install</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>See the code of <code>osxnotify</code> program for usage example.</p>
+
+<h2>
+<a id="issues-and-limitations" class="anchor" href="#issues-and-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Issues and limitations</h2>
+
+<p>Due to the nature of OS X notification system, it's currently impossible to
+change the icon. OS X assumes that notifications are sent from a running app.
+Since this isn't the case in, say, Python scripts, libosxnotify has to hack
+Objective-C runtime to make it think there's an app running. By doing so,
+libosxnotify sets the ID of the current up to the system-provided Terminal.app.</p>
+
+<p>libosxnotify only supports text content (title, subtitle and informative text)
+in notifications. Buttons, inputs and images aren't supported.</p>
+
+<p>UTF-8 is the only supported text encoding. And yes, emojis are supported ;).</p>
+
+<h2>
+<a id="disclaimer" class="anchor" href="#disclaimer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disclaimer</h2>
+
+<p>Keep in mind that this whole thing is a hack. It may not work as expected or it
+may surprise you by blowing up your program. You've been warned.</p>
+
+<h2>
+<a id="wrappers" class="anchor" href="#wrappers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wrappers</h2>
+
+<ul>
+<li>
+<a href="https://github.com/tomekwojcik/osxnotify-python">osxnotify-python</a> - native Python wrapper,</li>
+<li>
+<a href="https://github.com/tomekwojcik/osxnotify-python-cffi">osxnotify-python-cffi</a> - CFFI-based Python wrapper.</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>libosxnotify is licensed under MIT License.</p>
+
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p>libosxnotify was written by <a href="http://www.tomekwojcik.com/">Tomek Wójcik</a>.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
