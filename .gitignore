@@ -1,6 +1,7 @@
+*.bak
 *.o
 *.pyc
 *.pyo
 *.so
 build/
-
+Makefile

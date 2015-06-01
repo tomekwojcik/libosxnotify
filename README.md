@@ -10,11 +10,14 @@ programs to display native OS X notifications.
 ## Why?
 
 It all started as an idea to practice writing Python extensions in C. Then
-@lukaszkorecki suggested to support FFI so this code can be used in languages
-other than Python.
+[@lukaszkorecki](https://github.com/lukaszkorecki) suggested to support FFI
+so this code can be used in languages other than Python. The idea was to allow
+scripts to display notifications without relying on calling third party
+binaries.
 
-The idea is to allow scripts to display notifications without relying on
-third party binaries.
+In time, the idea evolved to become a shared library which can be used by other
+programs (e.g. the supplied `osxnotify` program) that want to display
+notifications.
 
 ## Requirements
 
@@ -26,14 +29,16 @@ third party binaries.
 To install the `libosxnotify` library, issue the following command:
 
 ```sh
+$ ./configure
 $ make install
 ```
 
-By default, the library will install to `/usr/local`. You can change this
-by setting `PREFIX` environment variable, e.g.
+By default, the library will install to `/usr/local`. You can change this using
+`--prefix` parameter for `configure`, e.g. 
 
 ```sh
-$ PREFIX=/Users/bilbo/opt/libosxnotify make install
+$ ./configure --prefix=/Users/bilbo/opt/libosxnotify
+$ make install
 ```
 
 ## Usage

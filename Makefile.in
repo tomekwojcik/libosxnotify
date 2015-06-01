@@ -1,4 +1,8 @@
-CFLAGS=-Wall -g
+PREFIX={prefix}
+BUILD_CFLAGS={build_cflags}
+CLANG={clang_path}
+
+CFLAGS=-Wall -g $(BUILD_CFLAGS)
 
 OBJC_CFLAGS=-ObjC -fno-objc-arc
 OBJC_FRAMEWORKS=-framework Foundation
@@ -11,38 +15,29 @@ INSTALL_DATA=/usr/bin/install -S -m 644
 VERSION=1.0
 COMPAT_VERSION=1.0
 
-ifndef PREFIX
-	PREFIX=/usr/local
-endif
-
-ifdef OSXNDEBUG
-	CFLAGS=-DOSXNDEBUG
-else
-	CFLAGS=-O3
-endif
+.PHONY: all
+all: build/libosxnotify.dylib build/libosxnotify.h build/osxnotify
 
 build:
-	mkdir -p build
+	/bin/mkdir -p build
 
 build/notify.o: build
-	clang $(CFLAGS) $(OBJC_CFLAGS) -dynamic -c -o build/notify.o src/notify.m
+	$(CLANG) $(CFLAGS) $(OBJC_CFLAGS) -dynamic -c -o build/notify.o src/notify.m
 
 build/bundle_id_hack.o: build
-	clang $(CFLAGS) $(OBJC_CFLAGS) -dynamic -c -o build/bundle_id_hack.o src/bundle_id_hack.m
+	$(CLANG) $(CFLAGS) $(OBJC_CFLAGS) -dynamic -c -o build/bundle_id_hack.o src/bundle_id_hack.m
 
 build/libosxnotify.dylib: build/notify.o build/bundle_id_hack.o
-	clang $(OBJC_FRAMEWORKS) $(OBJC_LDFLAGS) -install_name $(PREFIX)/lib/libosxnotify.dylib -current_version $(VERSION) -compatibility_version $(COMPAT_VERSION) -shared -undefined dynamic_lookup -o build/libosxnotify.dylib build/notify.o build/bundle_id_hack.o
+	$(CLANG) $(OBJC_FRAMEWORKS) $(OBJC_LDFLAGS) -install_name $(PREFIX)/lib/libosxnotify.dylib -current_version $(VERSION) -compatibility_version $(COMPAT_VERSION) -shared -undefined dynamic_lookup -o build/libosxnotify.dylib build/notify.o build/bundle_id_hack.o
 
 build/libosxnotify.h: build
-	cp src/libosxnotify.h build/libosxnotify.h
+	/bin/cp src/libosxnotify.h build/libosxnotify.h
 
 build/osxnotify: build build/libosxnotify.dylib
-	clang $(CFLAGS) -Isrc/ -Lbuild/ -losxnotify -o build/osxnotify src/osxnotify.c
+	$(CLANG) $(CFLAGS) -Isrc/ -Lbuild/ -losxnotify -o build/osxnotify src/osxnotify.c
 
 clean:
-	rm -rf build
-
-all: build/libosxnotify.dylib build/libosxnotify.h build/osxnotify
+	/bin/rm -rf build
 
 installdirs:
 	$(INSTALL) -d $(PREFIX)/bin

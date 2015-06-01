@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright (c) 2015 Tomek Wójcik <tomek@bthlabs.pl>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+import argparse
+import codecs
+import shlex
+import subprocess
+import sys
+
+CFLAGS_NON_DEBUG = '-O3'
+CFLAGS_DEBUG = '-DOSXNDEBUG'
+DEFAULT_PREFIX = '/usr/local'
+
+
+def find_bin(bin):
+    proc = subprocess.Popen(
+        shlex.split('which ' + bin), stdout=subprocess.PIPE
+    )
+
+    result = proc.wait()
+    if result == 0:
+        return proc.stdout.read().strip()
+
+    return None
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--debug', action='store_true', dest='debug', default=False,
+        help='produce a debug build'
+    )
+
+    parser.add_argument(
+        '--prefix', dest='prefix', default=DEFAULT_PREFIX,
+        help='installation prefix (default: %s)' % DEFAULT_PREFIX
+    )
+
+    args = parser.parse_args()
+
+    clang_path = find_bin('clang')
+    if not clang_path:
+        sys.stderr.write('E: clang: not found\n')
+        sys.exit(1)
+
+    template_context = {
+        'prefix': args.prefix,
+        'build_cflags': CFLAGS_NON_DEBUG,
+        'clang_path': clang_path
+    }
+
+    if args.debug:
+        template_context['build_cflags'] = CFLAGS_DEBUG
+
+    with codecs.open('Makefile.in', 'r', 'utf-8') as f:
+        template = f.read()
+
+    makefile = template.format(**template_context)
+    with codecs.open('Makefile', 'w', 'utf-8') as f:
+        f.write(makefile)
+
+    sys.exit(0)
